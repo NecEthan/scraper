@@ -123,6 +123,7 @@ def richmond_bot(startdate, enddate, wordlist):
     driver.quit()
 
     # Return the result as a JSON string
+    print(data)
     print(json.dumps(data))  # Print JSON to stdout
     return data
 
