@@ -25,7 +25,7 @@ jobs:
         run: |
           python -m venv myenv
           source myenv/bin/activate
-          pip install -r ./bots/requirements.txt
+         
 
       - name: Set up PostgreSQL environment variables
         env:
@@ -39,7 +39,7 @@ jobs:
     
 
       - name: Make the .sh script executable
-        run: chmod +x ../bots/run_bots.sh
+        run: chmod +x bots/run_bots.sh
 
       - name: Run scraper
-        run: ../bots/run_bots.sh
+        run: bots/run_bots.sh
