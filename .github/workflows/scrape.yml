@@ -1,6 +1,10 @@
 name: Scrape Web Data
 
 on:
+  # Trigger the action on push to any branch
+  push:
+    branches:
+      - main  # You can specify the branch(es) you want to trigger on
   # Schedule the action to run every day at 12:00 UTC
   schedule:
     - cron: '0 12 * * *'
