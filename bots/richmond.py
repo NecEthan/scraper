@@ -17,8 +17,6 @@ import json
 
 def richmond_bot(startdate, enddate, wordlist):
 
-    scraped_data = []
-
     def format_address(addresss):
         formatted_address = addresss.replace('\n', ' ')
         address_list.append(formatted_address)
@@ -47,7 +45,7 @@ def richmond_bot(startdate, enddate, wordlist):
     reversed_enddate = parsed_enddate.strftime('%d/%m/%Y')
 
     chrome_options = Options()
-    chrome_options.add_argument('--headless')
+    # chrome_options.add_argument('--headless')
     driver = webdriver.Chrome(options=chrome_options)
     url = 'https://www2.richmond.gov.uk/lbrplanning/Planning_Report.aspx'
     driver.get(url)
@@ -128,32 +126,26 @@ def richmond_bot(startdate, enddate, wordlist):
             data.append(item)
 
     driver.quit()
-
-    scraped_data = json.dumps(data)
-    # return scraped_data
-    # Define metadata
+    print(data)
     website_name = "ExampleWebsite"
     start_date = "2020-02-02"
     end_date = "2020-02-05"
-    scraped_at = datetime.datetime.now().isoformat()
+    scraped_at = datetime.datetime.now().isoformat()  
 
     data_to_send = [
         {
             "websiteName": website_name,
             "name": name,
             "address": address,
-            "startDate": start_date,
-            "endDate": end_date,
+            "startDate": parsed_startdate.isoformat(), 
+            "endDate": parsed_enddate.isoformat(),  
             "scrapedAt": scraped_at
         }
-        for name, address in scraped_data
+        for name, address in data
     ]
 
-    # Print the JSON for verification
-    print(json.dumps(data_to_send, indent=2))
-
     # API endpoint
-    api_url = "localhost:8080/scrape/save"
+    api_url = "http://localhost:8080/scrape/save"
 
     # Send the POST request
     response = requests.post(api_url, json=data_to_send)
