@@ -2,7 +2,7 @@
 source ./myenv/bin/activate
 
 # Run the scraper
-python3 ./richmond.py
+python3 bots/richmond.py
 
 # Deactivate the virtual environment (optional)
 deactivate
