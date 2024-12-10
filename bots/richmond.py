@@ -127,7 +127,7 @@ def richmond_bot(startdate, enddate, wordlist):
     driver.quit()
 
     scraped_data = json.dumps(data)
-    return scrapepd_data
+    return scraped_data
 
 
 richmond_bot('2020-02-02', '2020-02-05', 'tree')
