@@ -130,43 +130,44 @@ def richmond_bot(startdate, enddate, wordlist):
     driver.quit()
 
     scraped_data = json.dumps(data)
-    return scraped_data
+    # return scraped_data
+    # Define metadata
+    website_name = "ExampleWebsite"
+    start_date = "2020-02-02"
+    end_date = "2020-02-05"
+    scraped_at = datetime.datetime.now().isoformat()
+
+    data_to_send = [
+        {
+            "websiteName": website_name,
+            "name": name,
+            "address": address,
+            "startDate": start_date,
+            "endDate": end_date,
+            "scrapedAt": scraped_at
+        }
+        for name, address in scraped_data
+    ]
+
+    # Print the JSON for verification
+    print(json.dumps(data_to_send, indent=2))
+
+    # API endpoint
+    api_url = "localhost:8080/scrape/save"
+
+    # Send the POST request
+    response = requests.post(api_url, json=data_to_send)
+
+    # Check response
+    if response.status_code == 200:
+        print("Data saved successfully!")
+    else:
+        print(f"Failed to save data: {response.status_code}")
+        print(response.text)
+
+
 
 
 richmond_bot('2020-02-02', '2020-02-05', 'tree')
 
-
-# Define metadata
-website_name = "ExampleWebsite"
-start_date = "2020-02-02"
-end_date = "2020-02-05"
-scraped_at = datetime.datetime.now().isoformat()
-
-data_to_send = [
-    {
-        "websiteName": website_name,
-        "name": name,
-        "address": address,
-        "startDate": start_date,
-        "endDate": end_date,
-        "scrapedAt": scraped_at
-    }
-    for name, address in scraped_data
-]
-
-# Print the JSON for verification
-print(json.dumps(data_to_send, indent=2))
-
-# API endpoint
-api_url = "localhost:8080/scrape/save"
-
-# Send the POST request
-response = requests.post(api_url, json=data_to_send)
-
-# Check response
-if response.status_code == 200:
-    print("Data saved successfully!")
-else:
-    print(f"Failed to save data: {response.status_code}")
-    print(response.text)
 
