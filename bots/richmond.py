@@ -16,6 +16,9 @@ import json
 
 
 def richmond_bot(startdate, enddate, wordlist):
+
+    scraped_data = []
+
     def format_address(addresss):
         formatted_address = addresss.replace('\n', ' ')
         address_list.append(formatted_address)
