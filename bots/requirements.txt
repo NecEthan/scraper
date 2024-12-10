@@ -1,0 +1,4 @@
+pandas==1.5.3
+selenium==4.10.0
+beautifulsoup4==4.12.2
+lxml==4.9.3

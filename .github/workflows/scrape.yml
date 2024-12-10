@@ -1,0 +1,42 @@
+name: Scrape Web Data
+
+on:
+  # Schedule the action to run every day at 12:00 UTC
+  schedule:
+    - cron: '0 12 * * *'
+
+jobs:
+    scrape:
+        runs-on: ubuntu-latest
+    
+        steps:
+        - name: Checkout Repository
+        uses: actions/checkout@v3
+    
+        - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+            python-version: '3.8'
+    
+        - name: Install dependencies
+        run: |
+            python -m venv myenv
+            source myenv/bin/activate
+            pip install -r requirements.txt
+    
+        - name: Set up PostgreSQL environment variables
+        env:
+            DB_NAME: ${{ secrets.DB_NAME }}
+            DB_USER: ${{ secrets.DB_USER }}
+            DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+            DB_HOST: ${{ secrets.DB_HOST }}
+            DB_PORT: ${{ secrets.DB_PORT }}
+        run: |
+            echo "Environment variables set successfully."
+    
+        - name: Make the .sh script executable
+        run: chmod +x ./bots/run_bots.sh
+    
+        - name: Run scraper
+        run: ./bots/run_bots.sh
+    
