@@ -36,8 +36,9 @@ def richmond_bot(startdate, enddate, wordlist):
     address_list = []
     name_list = []
     data = []
-
+    print(wordlist)
     words = convert(wordlist)
+    print(words)
     words_search_for = words.rstrip(words[-1])
     parsed_startdate = pd.to_datetime(startdate, format="%Y-%m-%d")
     parsed_enddate = pd.to_datetime(enddate, format="%Y-%m-%d")
@@ -89,7 +90,7 @@ def richmond_bot(startdate, enddate, wordlist):
             address_divs = row.find_all('p')
             address_desc = address_divs[1].text
 
-            if (re.search(words_search_for, address_desc, flags=re.I)):
+            if (re.search(words_search_for, words, flags=re.I)):
                 row_list.append(row)
 
         for row in row_list:
@@ -127,9 +128,10 @@ def richmond_bot(startdate, enddate, wordlist):
 
     driver.quit()
     print(data)
-    website_name = "ExampleWebsite"
-    start_date = "2020-02-02"
-    end_date = "2020-02-05"
+    print(len(data))
+    website_name = "richmond"
+    start_date = "2024-02-06"
+    end_date = "2024-02-06"
     scraped_at = datetime.datetime.now().isoformat()  
 
     data_to_send = [
@@ -145,7 +147,8 @@ def richmond_bot(startdate, enddate, wordlist):
     ]
 
     # API endpoint
-    api_url = "http://localhost:8080/scrape/save"
+    # api_url = "http://localhost:8080/scrape/save"
+    api_url = "https://council-data-hub-backend-production.up.railway.app/scrape/save"
 
     # Send the POST request
     response = requests.post(api_url, json=data_to_send)
@@ -159,7 +162,6 @@ def richmond_bot(startdate, enddate, wordlist):
 
 
 
-
-richmond_bot('2020-02-02', '2020-02-05', 'tree')
+richmond_bot('2024-02-06', '2024-02-06', ['tree', 'rear'])
 
 
