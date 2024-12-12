@@ -45,8 +45,12 @@ def richmond_bot(startdate, enddate, wordlist):
     reversed_startdate = parsed_startdate.strftime('%d/%m/%Y')
     reversed_enddate = parsed_enddate.strftime('%d/%m/%Y')
 
+    formatted_start_date = parsed_startdate.strftime('%m/%d/%y')
+    formatted_end_date = parsed_enddate.strftime('%m/%d/%y')
+
+
     chrome_options = Options()
-    chrome_options.add_argument('--headless')
+    # chrome_options.add_argument('--headless')
     driver = webdriver.Chrome(options=chrome_options)
     url = 'https://www2.richmond.gov.uk/lbrplanning/Planning_Report.aspx'
     driver.get(url)
@@ -127,24 +131,23 @@ def richmond_bot(startdate, enddate, wordlist):
             data.append(item)
 
     driver.quit()
-    print(data)
     print(len(data))
     website_name = "richmond"
-    start_date = "2024-02-06"
-    end_date = "2024-02-06"
-    scraped_at = datetime.datetime.now().isoformat()  
+    now = datetime.datetime.now()
+    scraped_at = now.strftime("%m/%d/%y")
 
     data_to_send = [
         {
             "websiteName": website_name,
             "name": name,
             "address": address,
-            "startDate": parsed_startdate.isoformat(), 
-            "endDate": parsed_enddate.isoformat(),  
+            "startDate": formatted_start_date, 
+            "endDate": formatted_end_date,  
             "scrapedAt": scraped_at
         }
         for name, address in data
     ]
+    print(data_to_send)
 
     # API endpoint
     # api_url = "http://localhost:8080/scrape/save"
@@ -162,6 +165,6 @@ def richmond_bot(startdate, enddate, wordlist):
 
 
 
-richmond_bot('2024-02-06', '2024-02-06', ['tree', 'rear'])
+richmond_bot('2023-09-05', '2023-09-05', ['tree', 'rear'])
 
 
