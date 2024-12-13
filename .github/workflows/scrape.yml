@@ -6,7 +6,7 @@ on:
       - main  
   # Schedule the action to run every day at 12:00 UTC
   schedule:
-    - cron: '30 12 * * *'
+    - cron: '40 13 * * *'
 
 jobs:
   scrape:
