@@ -1,5 +1,3 @@
-import json
-from datetime import datetime, timedelta
 import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -11,8 +9,7 @@ from selenium.webdriver.chrome.options import Options
 import time
 from bs4 import BeautifulSoup  
 import requests
-import datetime
-import json
+from datetime import datetime
 
 
 def richmond_bot(startdate, enddate, wordlist):
@@ -36,21 +33,23 @@ def richmond_bot(startdate, enddate, wordlist):
     address_list = []
     name_list = []
     data = []
+    date_list = []
     print(wordlist)
     words = convert(wordlist)
     print(words)
     words_search_for = words.rstrip(words[-1])
+
     parsed_startdate = pd.to_datetime(startdate, format="%Y-%m-%d")
     parsed_enddate = pd.to_datetime(enddate, format="%Y-%m-%d")
     reversed_startdate = parsed_startdate.strftime('%d/%m/%Y')
     reversed_enddate = parsed_enddate.strftime('%d/%m/%Y')
 
-    formatted_start_date = parsed_startdate.strftime('%m/%d/%y')
-    formatted_end_date = parsed_enddate.strftime('%m/%d/%y')
-
+    # Adjusting date format to match LocalDateTime with time
+    formatted_start_date = parsed_startdate.strftime('%Y-%m-%d') + ' 00:00:00'  # Format with time
+    formatted_end_date = parsed_enddate.strftime('%Y-%m-%d') + ' 00:00:00'      # Format with time
 
     chrome_options = Options()
-    chrome_options.add_argument('--headless')
+    # chrome_options.add_argument('--headless')
     driver = webdriver.Chrome(options=chrome_options)
     url = 'https://www2.richmond.gov.uk/lbrplanning/Planning_Report.aspx'
     driver.get(url)
@@ -122,35 +121,36 @@ def richmond_bot(startdate, enddate, wordlist):
             name_soup = BeautifulSoup(name_page_source, 'html.parser')
             name = name_soup.find('span', id='ctl00_PageContent_lbl_Applic_Name')
             name_list.append(name.text.strip())
+            application_received_tags = name_soup.find('strong', text='Validated:')
+            for application_received_tag in application_received_tags:
+                date_text = application_received_tag.find_next(text=True).strip()
+                date_obj = pd.to_datetime(date_text)
+                formatted_date = date_obj.strftime('%d/%m/%y')
+                date_list.append(formatted_date)
 
             driver.back()
             driver.back()
 
-        merge_data = zip(name_list, address_list)
+        merge_data = zip(name_list, address_list, date_list)
         for item in merge_data:
             data.append(item)
 
     driver.quit()
     print(len(data))
     website_name = "richmond"
-    now = datetime.datetime.now()
-    scraped_at = now.strftime("%m/%d/%y")
 
     data_to_send = [
         {
             "websiteName": website_name,
             "name": name,
             "address": address,
-            "startDate": formatted_start_date, 
-            "endDate": formatted_end_date,  
-            "scrapedAt": scraped_at
+            "date": date
         }
-        for name, address in data
+        for name, address, date in data
     ]
     print(data_to_send)
 
     # API endpoint
-    # api_url = "http://localhost:8080/scrape/save"
     api_url = "https://council-data-hub-backend-production.up.railway.app/scrape/save"
 
     # Send the POST request
@@ -164,7 +164,4 @@ def richmond_bot(startdate, enddate, wordlist):
         print(response.text)
 
 
-
-richmond_bot('2023-09-05', '2023-09-05', ['tree', 'rear'])
-
-
+richmond_bot('2024-09-05', '2024-09-05', ['tree', 'rear'])
