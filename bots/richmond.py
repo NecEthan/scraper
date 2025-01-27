@@ -38,6 +38,10 @@ def richmond_bot(startdate, enddate, wordlist):
     words = convert(wordlist)
     print(words)
     words_search_for = words.rstrip(words[-1])
+    print(words_search_for)
+    row_list = []
+
+    wordlist = ['rear', 'tree']
 
     parsed_startdate = pd.to_datetime(startdate, format="%Y-%m-%d")
     parsed_enddate = pd.to_datetime(enddate, format="%Y-%m-%d")
@@ -87,14 +91,28 @@ def richmond_bot(startdate, enddate, wordlist):
         searchResultsPage = soup.find('ul', class_='planning-apps')
         searchResults = searchResultsPage.find_all('li')
 
-        row_list = []
+        print(len(searchResults))
 
         for row in searchResults:
             address_divs = row.find_all('p')
-            address_desc = address_divs[1].text
+            address_desc = address_divs[1].text.strip().lower()
+            # print(address_desc)
+            # print('------------------')
 
-            if (re.search(words_search_for, words, flags=re.I)):
-                row_list.append(row)
+            for word in wordlist:
+                if word in address_desc:
+                    print(address_desc)
+                    print('------------------')
+                    print(row)
+
+                    row_list.append(row)
+                    break
+
+
+
+
+            # if (re.search(words, address_desc.lower(), flags=re.I)):
+            #     row_list.append(row)
 
         for row in row_list:
             address_div = row.find('h3')
@@ -121,9 +139,9 @@ def richmond_bot(startdate, enddate, wordlist):
             name_soup = BeautifulSoup(name_page_source, 'html.parser')
             name = name_soup.find('span', id='ctl00_PageContent_lbl_Applic_Name')
             name_list.append(name.text.strip())
-            application_received_tags = name_soup.find('strong', text='Validated:')
+            application_received_tags = name_soup.find('strong', string='Validated:')
             for application_received_tag in application_received_tags:
-                date_text = application_received_tag.find_next(text=True).strip()
+                date_text = application_received_tag.find_next(string=True).strip()
                 date_obj = pd.to_datetime(date_text)
                 formatted_date = date_obj.strftime('%d/%m/%y')
                 date_list.append(formatted_date)
