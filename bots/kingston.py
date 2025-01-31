@@ -15,20 +15,16 @@ import urllib3
 import random
 
 def kingston_bot(wordlist):
-    # try:
-        currentDate = '2024-09-05'
 
-        # start_date = datetime.now() - timedelta(days=2)
-        parsed_date = pd.to_datetime(currentDate, format="%Y-%m-%d")
-        reversed_date = parsed_date.strftime('%d/%m/%Y')
-        
-        # for i in range(2):
-        #     current_date = start_date + timedelta(days=i)
-        # formatted_date = current_date.strftime('%Y-%m-%d')  
-        # reversed_date = current_date.strftime('%d/%m/%Y')  
+    start_date = datetime.now() - timedelta(days=2)
+
+    for i in range(2):
+        current_date = start_date + timedelta(days=i)
+        formatted_date = current_date.strftime('%Y-%m-%d')  
+        reversed_date = current_date.strftime('%d/%m/%Y')  
         print(reversed_date)
 
-        # time.sleep(random.uniform(5, 15)) 
+        time.sleep(random.uniform(5, 15)) 
 
         
         print(f"Scraping for date: {reversed_date}")
@@ -75,27 +71,27 @@ def kingston_bot(wordlist):
             input_element2 = wait.until(EC.presence_of_element_located((By.ID, 'applicationReceivedEnd')))
             input_element1.send_keys(reversed_date)
             input_element2.send_keys(reversed_date)
-            # time.sleep(random.uniform(2, 5))  
+            time.sleep(random.uniform(2, 5))  
         except NoSuchElementException:
             print("Date input elements not found. Skipping this step or retrying...")
         except TimeoutException:
             print("Date input elements did not appear within the timeout period.")
         
-        # time.sleep(random.uniform(1, 3))  
+        time.sleep(random.uniform(1, 3))  
 
 
         # Click the search button
         try:
             search_element = driver.find_element(By.CLASS_NAME, 'recaptcha-submit')
             search_element.click()
-            # time.sleep(random.uniform(1, 3)) 
+            time.sleep(random.uniform(1, 3)) 
         except NoSuchElementException:
             print("Search button not found. Skipping this step or retrying...")
             driver.refresh()
             try:
                 search_element = driver.find_element(By.CLASS_NAME, 'recaptcha-submit')
                 search_element.click()
-                # time.sleep(random.uniform(1, 3)) 
+                time.sleep(random.uniform(1, 3)) 
             except TimeoutException:
                 print("Element not found after second attempt. Exiting.")
 
@@ -113,13 +109,13 @@ def kingston_bot(wordlist):
         try:
             wait = WebDriverWait(driver, 40)
             wait.until(EC.presence_of_element_located((By.ID, 'resultsPerPage')))
-            # time.sleep(random.uniform(2, 4)) 
+            time.sleep(random.uniform(2, 4)) 
         except TimeoutException:
             print("Timed out waiting for page to load. Retrying...")
             driver.refresh()
             try:
                 wait.until(EC.presence_of_element_located((By.ID, 'resultsPerPage')))
-                # time.sleep(random.uniform(2, 4)) 
+                time.sleep(random.uniform(2, 4)) 
             except TimeoutException:
                 print("Element not found after second attempt. Exiting.")
 
@@ -179,7 +175,7 @@ def kingston_bot(wordlist):
                         summary_page.raise_for_status()
                         time.sleep(random.uniform(3, 6)) 
                         summary_soup = BeautifulSoup(summary_page.content, "html.parser")
-                        # time.sleep(random.uniform(3, 6)) 
+                        time.sleep(random.uniform(3, 6)) 
 
                         info_tab = summary_soup.find(id='subtab_details')
                         info_href = info_tab.get('href')
@@ -189,7 +185,7 @@ def kingston_bot(wordlist):
                         time.sleep(random.uniform(1, 3)) 
 
                         further_info_soup = BeautifulSoup(further_info.content, "html.parser")
-                        # time.sleep(random.uniform(3, 6))  
+                        time.sleep(random.uniform(3, 6))  
 
                         applicant_row = further_info_soup.find('th', string='Applicant Name').find_next('td')
                         applicant_name = applicant_row.get_text(strip=True)
@@ -228,8 +224,6 @@ def kingston_bot(wordlist):
         formatted_date = date.strftime('%d/%m/%y')  
         print(formatted_date)
 
-        # date = pd.to_datetime(reversed_date)
-        # formatted_date = date.strftime('%d/%m/%y')
         website_name = "kingston"
 
         data_to_send = [
@@ -252,9 +246,5 @@ def kingston_bot(wordlist):
             print(response.text)
             return
 
-    # except Exception as e:
-    #     print(f"An error occurred: {e}")
-    # finally:
-    #     driver.quit() 
 
 kingston_bot(['tree', 'rear'])
