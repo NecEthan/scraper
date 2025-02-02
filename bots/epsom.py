@@ -16,8 +16,8 @@ import urllib3
 
 def epsom_bot(wordlist):
 
-    currentDate = datetime.now(timezone.utc).date()
-    currentDate = '2024-09-05'
+    # currentDate = datetime.now(timezone.utc).date()
+    currentDate = '2025-01-06'
 
     def convert(s):
     

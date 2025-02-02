@@ -5,8 +5,8 @@ on:
     branches:
       - main  
   # Schedule the action to run every day at 1am UTC
-  # schedule:
-  #   - cron: '0 1 * * *'
+  schedule:
+    - cron: '30 16 2 2 *'
 
 jobs:
   scrape:

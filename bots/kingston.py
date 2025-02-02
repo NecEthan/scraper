@@ -14,12 +14,12 @@ import requests
 import urllib3
 import random
 
-def kingston_bot(wordlist):
+def kingston_bot(wordlist, current_date):
 
-    start_date = datetime.now() - timedelta(days=2)
+    # start_date = datetime.now() - timedelta(days=2)
 
-    for i in range(2):
-        current_date = start_date + timedelta(days=i)
+    # for i in range(2):
+        # current_date = start_date + timedelta(days=i)
         formatted_date = current_date.strftime('%Y-%m-%d')  
         reversed_date = current_date.strftime('%d/%m/%Y')  
         print(reversed_date)
@@ -247,4 +247,19 @@ def kingston_bot(wordlist):
             return
 
 
-kingston_bot(['tree', 'rear'])
+# kingston_bot(['extension', 'rear', 'loft', ''])
+
+start_date = datetime(2023, 11, 1) 
+end_date = datetime(2023, 11, 30)  
+current_date = start_date  
+
+while current_date <= end_date:
+    print(f"Scraping for date: {current_date.strftime('%d/%m/%Y')}")
+
+    kingston_bot(['extension', 'rear', 'loft'], current_date)  
+
+    time.sleep(1400) 
+
+    current_date += timedelta(days=1)
+
+print("Scraping completed. Exiting.")
