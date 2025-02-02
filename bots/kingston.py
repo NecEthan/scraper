@@ -249,8 +249,8 @@ def kingston_bot(wordlist, current_date):
 
 # kingston_bot(['extension', 'rear', 'loft', ''])
 
-start_date = datetime(2023, 11, 1) 
-end_date = datetime(2023, 11, 30)  
+start_date = datetime(2024, 11, 1) 
+end_date = datetime(2024, 11, 30)  
 current_date = start_date  
 
 while current_date <= end_date:
