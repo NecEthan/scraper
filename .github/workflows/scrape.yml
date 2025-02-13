@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - main  
-  # Schedule the action to run every day at 1am UTC
+  # Schedule to run every day at 1am UTC
   schedule:
-    - cron: '30 16 2 2 *'
+    - cron: '0 1 * * *'
 
 jobs:
   scrape:

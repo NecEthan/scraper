@@ -14,9 +14,11 @@ import requests
 import urllib3
 import random
 
-def epsom_bot(wordlist):
+def hl_bot(wordlist):
 
     current_date = datetime.now() - timedelta(days=1)
+
+
     formatted_date = current_date.strftime('%Y-%m-%d')  
     reversed_date = current_date.strftime('%d/%m/%Y')  
     print(reversed_date)
@@ -46,12 +48,12 @@ def epsom_bot(wordlist):
 
     # Set up the WebDriver
     chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--incognito")
     chrome_options.add_argument('headless') 
     driver = webdriver.Chrome(options=chrome_options)
 
-    base_url = 'https://eplanning.epsom-ewell.gov.uk/'
-
-    url = 'https://eplanning.epsom-ewell.gov.uk/online-applications/search.do?action=advanced'
+    base_url = 'https://public-access.lbhf.gov.uk'
+    url = 'https://public-access.lbhf.gov.uk/online-applications/search.do?action=advanced'
 
     try:
         driver.get(url)
@@ -65,8 +67,8 @@ def epsom_bot(wordlist):
     try:
         time.sleep(random.uniform(3, 8))  
         wait = WebDriverWait(driver, 40)
-        input_element1 = wait.until(EC.presence_of_element_located((By.ID, 'applicationReceivedStart')))
-        input_element2 = wait.until(EC.presence_of_element_located((By.ID, 'applicationReceivedEnd')))
+        input_element1 = wait.until(EC.presence_of_element_located((By.ID, 'applicationValidatedStart')))
+        input_element2 = wait.until(EC.presence_of_element_located((By.ID, 'applicationValidatedEnd')))
         input_element1.send_keys(reversed_date)
         input_element2.send_keys(reversed_date)
         time.sleep(random.uniform(2, 5))  
@@ -98,6 +100,7 @@ def epsom_bot(wordlist):
         message_box = driver.find_element(By.CLASS_NAME, 'messagebox')
         if message_box:
             print('successfully found no data')
+            driver.quit()
             return
             # continue
     except Exception:
@@ -222,7 +225,7 @@ def epsom_bot(wordlist):
     formatted_date = date.strftime('%d/%m/%y')  
     print(formatted_date)
 
-    website_name = "epsom"
+    website_name = "hl"
 
     data_to_send = [
         {
@@ -235,26 +238,27 @@ def epsom_bot(wordlist):
     ]
     print(data_to_send)
 
-    # api_url = "https://council-data-hub-backend-production.up.railway.app/scrape/save"
-    # response = requests.post(api_url, json=data_to_send)
-    # if response.status_code == 200:
-    #     print("Data saved successfully!")
-    # else:
-    #     print(f"Failed to save data: {response.status_code}")
-    #     print(response.text)
-    #     return
-epsom_bot(['extension', 'rear', 'loft'])  
+    api_url = "https://council-data-hub-backend-production.up.railway.app/scrape/save"
+    response = requests.post(api_url, json=data_to_send)
+    if response.status_code == 200:
+        print("Data saved successfully!")
+        driver.quit()
+    else:
+        print(f"Failed to save data: {response.status_code}")
+        print(response.text)
+        return
 
-# start_date = datetime(2023, 11, 1) 
-# end_date = datetime(2023, 11, 30)  
+hl_bot(['extension','Extension', 'loft'])  
+
+# start_date = datetime(2025, 1, 1) 
+# end_date = datetime(2025, 2, 13)  
 # current_date = start_date  
 
 # while current_date <= end_date:
 #     print(f"Scraping for date: {current_date.strftime('%d/%m/%Y')}")
 
-#     epsom_bot(['extension', 'rear', 'loft'], current_date)  
 
-#     time.sleep(1400) 
+#     time.sleep(100) 
 
 #     current_date += timedelta(days=1)
 

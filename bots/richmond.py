@@ -182,4 +182,4 @@ def richmond_bot(startdate, enddate, wordlist):
         print(response.text)
 
 
-richmond_bot('2024-09-05', '2024-09-05', ['tree', 'rear'])
+richmond_bot('2024-09-05', '2024-09-05', ['tree','Extension', 'rear'])
