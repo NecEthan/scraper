@@ -238,15 +238,15 @@ def hl_bot(wordlist):
     ]
     print(data_to_send)
 
-    # api_url = "https://council-data-hub-backend-production.up.railway.app/scrape/save"
-    # response = requests.post(api_url, json=data_to_send)
-    # if response.status_code == 200:
-    #     print("Data saved successfully!")
-    #     driver.quit()
-    # else:
-    #     print(f"Failed to save data: {response.status_code}")
-    #     print(response.text)
-    #     return
+    api_url = "https://council-data-hub-backend-production.up.railway.app/scrape/save"
+    response = requests.post(api_url, json=data_to_send)
+    if response.status_code == 200:
+        print("Data saved successfully!")
+        driver.quit()
+    else:
+        print(f"Failed to save data: {response.status_code}")
+        print(response.text)
+        return
 
 hl_bot(['extension', 'Extension', 'loft'])  
 
