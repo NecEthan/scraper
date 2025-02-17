@@ -16,7 +16,7 @@ import random
 
 def hl_bot(wordlist):
 
-    current_date = datetime.now() - timedelta(days=1)
+    current_date = datetime.now() - timedelta(days=5)
 
 
     formatted_date = current_date.strftime('%Y-%m-%d')  
@@ -238,17 +238,17 @@ def hl_bot(wordlist):
     ]
     print(data_to_send)
 
-    api_url = "https://council-data-hub-backend-production.up.railway.app/scrape/save"
-    response = requests.post(api_url, json=data_to_send)
-    if response.status_code == 200:
-        print("Data saved successfully!")
-        driver.quit()
-    else:
-        print(f"Failed to save data: {response.status_code}")
-        print(response.text)
-        return
+    # api_url = "https://council-data-hub-backend-production.up.railway.app/scrape/save"
+    # response = requests.post(api_url, json=data_to_send)
+    # if response.status_code == 200:
+    #     print("Data saved successfully!")
+    #     driver.quit()
+    # else:
+    #     print(f"Failed to save data: {response.status_code}")
+    #     print(response.text)
+    #     return
 
-hl_bot(['extension','Extension', 'loft'])  
+hl_bot(['extension', 'Extension', 'loft'])  
 
 # start_date = datetime(2025, 1, 1) 
 # end_date = datetime(2025, 2, 13)  

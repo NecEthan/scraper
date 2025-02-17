@@ -16,7 +16,7 @@ import random
 
 def epsom_bot(wordlist):
 
-    current_date = datetime.now() - timedelta(days=1)
+    current_date = datetime.now() - timedelta(days=5)
     formatted_date = current_date.strftime('%Y-%m-%d')  
     reversed_date = current_date.strftime('%d/%m/%Y')  
     print(reversed_date)
